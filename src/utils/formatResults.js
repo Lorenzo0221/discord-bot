@@ -1,10 +1,10 @@
 const pb = {
-    le: '',
-    me: '',
-    re: '',
-    lf: '',
-    mf: '',
-    rf: '',
+    le: '<:links:1230896907157770250>',
+    me: '<:mid:1230896905882566758>',
+    re: '<:rechts:1230896904448245810>',
+    lf: '<:leftfull:1230896902094983239> ',
+    mf: '<:midfull:1230896901193334886> ',
+    rf: '<:rightfull:1230896899809345607>',
   };
    
   function formatResults(upvotes = [], downvotes = []) {
