@@ -1,20 +1,26 @@
-const { SlashCommandBuilder, ChannelType, ChatInputCommandInteraction } = require('discord.js');
+const { SlashCommandBuilder, ChannelType, ChatInputCommandInteraction,ApplicationCommandOptionType } = require('discord.js');
 const GuildConfiguration = require('../../models/GuildConfiguration')
 
 module.exports = {
+  name: 'config-suggestion',
+  description: 'Configure a suggestion.',
+  dm_permission: false,
+
+
   /**
    *
    * @param {Client} client
    * @param {ChatInputCommandInteraction} interaction
    */
   callback: async (client, interaction) => {
+    
     let guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId });
         if (!guildConfiguration) {
           guildConfiguration = new GuildConfiguration ({ guildId: interaction.guildId });
         };
         const subcommand = interaction.options.getSubcommand();
         if (subcommand === 'add') {
-            const channel = interaction.options.getChannel('channel');
+            const channel = interaction.options.getChannel('channel-add');
           
         if (guildConfiguration.suggestionChannelIds.includes(channel.id)) {
              await interaction.reply(`${channel} is already a suggestions channel.`);
@@ -28,7 +34,7 @@ module.exports = {
         }
           
         if (subcommand === 'remove') {
-        const channel = interaction.options.getChannel('channel');
+        const channel = interaction.options.getChannel('channel-remove');
           
         if (!guildConfiguration.suggestionChannelIds.includes(channel.id)) {
             await interaction.reply(`${channel} is not a suggestion channel.`);
@@ -42,34 +48,38 @@ module.exports = {
             return;
         }
   },
-  data: new SlashCommandBuilder()
-  .setName('config-suggestions')
-  .setDescription('Configure suggestions.')
-  .setDMPermission(false)
-  .addSubcommand((subcommand) =>
-    subcommand
-      .setName('add')
-      .setDescription('Add a suggestions channel.')
-      .addChannelOption((option) =>
-        option
-          .setName('channel')
-          .setDescription('The channel you want to add.')
-          .addChannelTypes(ChannelType.GuildText)
-          .setRequired(true)
-      )
-  )
-  .addSubcommand((subcommand) =>
-    subcommand
-      .setName('remove')
-      .setDescription('Remove a suggestions channel.')
-      .addChannelOption((option) =>
-        option
-          .setName('channel')
-          .setDescription('The channel you want to remove.')
-          .addChannelTypes(ChannelType.GuildText)
-          .setRequired(true)
-      )
-  ),
+ 
+    options: [
+        {
+          name: 'add',
+          description: "add a suggestions channel",
+          type: ApplicationCommandOptionType.Subcommand,
+          options: [
+              {
+                  name: 'channel-add',
+                  description: 'the channel you want to add',      
+                  type: ApplicationCommandOptionType.Channel,              }
+             
+              ],
+          },
+          
+   
+{
+
+  name: 'remove', 
+    description: "Remove a suggestions channel.",
+    type: ApplicationCommandOptionType.Subcommand,
+
+    options: [
+        {
+            name: 'channel-remove',
+            description: 'The suggestion channel you want to remove.',
+            type: ApplicationCommandOptionType.Channel,
+            
+        },
+      ],
+},
+],
   
 };
     

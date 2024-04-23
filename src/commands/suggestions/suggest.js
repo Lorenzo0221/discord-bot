@@ -4,11 +4,11 @@ const GuildConfiguration = require('../../models/GuildConfiguration');
 const formatResults = require("../../utils/formatResults");
 
 module.exports = {
-    data: {
+     
         name: 'suggest',
         description: 'Create a suggestion.',
         dm_permission: false,
-    },
+    
 
     /**
      * 
@@ -16,7 +16,7 @@ module.exports = {
      * @param {ChatInputCommandInteraction} param0.interaction
      */
 
-    callback: async (client, interaction) => {       
+    callback: async (client, interaction) => {   
                try {
                     const guildConfiguration = await GuildConfiguration.findOne({ guildId: interaction.guildId});
         
